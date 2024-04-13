@@ -11,6 +11,8 @@ function App() {
             <Routes>
                 <Route index element={<Dash />} />
                 <Route path={"recommend"} element={<Home/>}/>
+                <Route path={"login"} element={<Login/>} />
+                <Route path={"signup"} element={<SignUp/>} />
             </Routes>
         </BrowserRouter>
     );
