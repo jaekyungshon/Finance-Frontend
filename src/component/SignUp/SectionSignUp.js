@@ -48,7 +48,7 @@ function SignUp() {
         } catch (error) {
             if  (error.response.status === 401) {
                 console.error('회원가입 실패:', error.response.statusText);
-                setError('회원가입에 실패했습니다. 다시 시도해주세요.');
+                setError('중복된 아이디입니다');
             }else {
                 console.error('네트워크 오류:', error);
                 setError('네트워크 오류가 발생했습니다.');
