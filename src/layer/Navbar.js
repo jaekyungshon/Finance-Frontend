@@ -7,7 +7,6 @@ import {ButtonGroup} from "reactstrap";
 import {useState} from "react";
 import {useEffect} from "react";
 import axios from "axios";
-
 function NavBar(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState("");
@@ -122,9 +121,28 @@ function NavBar(props) {
                             <Nav.Link href="/community" disabled>커뮤니티</Nav.Link>
                             <Nav.Link href="/support" disabled>지원</Nav.Link>
                         </Nav>
-                        <ButtonGroup style={{marginRight:"100px"}}>
-                            <Button variant={"outline-light"}>로그인</Button>
-                            <Button variant={"outline-light"}>회원가입</Button>
+                        <ButtonGroup style={{ marginRight: "100px" }}>
+                            {isLoggedIn ? (
+                                <>
+                                    <span style={{ color: "white", marginRight: "20px" ,lineHeight: "2.5"}}>안녕하세요, {username}</span>
+                                    <Button variant={"outline-light"} onClick={handleLogout}>
+                                        로그아웃
+                                    </Button>
+                                    <Button variant={"outline-light"} href={"#"}>
+                                        마이페이지
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button variant={"outline-light"} href={"/login"}>
+                                        로그인
+                                    </Button>
+                                    <Button variant={"outline-light"} href={"/signup"}>
+                                        회원가입
+                                    </Button>
+                                </>
+                            )}
+
                         </ButtonGroup>
                     </Navbar.Collapse>
                 </Container>
