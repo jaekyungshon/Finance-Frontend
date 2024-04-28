@@ -1,5 +1,7 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from "./page/Home";
+import Login from "./page/Login";
+import SignUp from "./page/SignUp";
 import React from "react";
 //import PriceMenu from "./page/PriceMenu";
 //import PriceDetail from "./page/PriceDetail";
