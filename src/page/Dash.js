@@ -3,9 +3,11 @@ import GlobalStyle from "../GlobalStyle";
 import NavBar from "../layer/Navbar";
 import Card from "react-bootstrap/Card";
 import Footer from "../layer/Footer";
-import {MDBCol, MDBContainer,MDBRow,MDBBtn} from "mdb-react-ui-kit";
+import {MDBCol, MDBContainer, MDBRow, MDBBtn, MDBCard} from "mdb-react-ui-kit";
 import ScrollToTopButton from "../layer/ScrollToTopButton";
 import axios from "axios";
+import * as PropTypes from "prop-types";
+
 
 function Dash(props) {
 
@@ -100,43 +102,40 @@ function Dash(props) {
                                 }}>
                                     <MDBRow className={"mb-4"}>
                                         <MDBCol>
-                                            <MDBBtn floating
+                                            <MDBCard floating
                                                     className={'m-1'}
-                                                    style={{background:"white", borderRadius:"50px", border:"2px solid black",
+                                                    style={{background:"white", borderRadius:"50px", padding:"10px 15px",border:"2px solid black",
                                                         transition: "background 0.3s"}}
-                                                    href={"http://localhost:3000/recommend"}
-                                                    role={'button'}
-                                                    onMouseEnter={(e) => { e.currentTarget.style.background="gray";}}
+                                                     onClick={() => { window.location.href = 'http://localhost:3000/recommend';}}
+                                                     onMouseEnter={(e) => { e.currentTarget.style.background="gray";}}
                                                     onMouseLeave={(e) => { e.currentTarget.style.background="white";}}>
                                                 <img alt={""} src={"home.png"} width={"30"} height={"30"} />
-                                            </MDBBtn>
+                                            </MDBCard>
                                             <p><strong>종목추천</strong></p>
                                         </MDBCol>
                                         <MDBCol>
-                                            <MDBBtn floating
+                                            <MDBCard floating
                                                     className={'m-1'}
-                                                    style={{background:"white", borderRadius:"50px", border:"2px solid black",
+                                                    style={{background:"white", borderRadius:"50px", padding:"10px 15px",border:"2px solid black",
                                                         transition: "background 0.3s"}}
-                                                    href={"http://localhost:3000/price-menu"}
-                                                    role={'button'}
-                                                    onMouseEnter={(e) => { e.currentTarget.style.background="gray";}}
-                                                    onMouseLeave={(e) => { e.currentTarget.style.background="white";}}>
+                                                     onClick={() => { window.location.href = 'http://localhost:3000/price-menu';}}
+                                                     onMouseEnter={(e) => { e.currentTarget.style.background="gray";}}
+                                                     onMouseLeave={(e) => { e.currentTarget.style.background="white";}}>
                                                 <img alt={""} src={"home.png"} width={"30"} height={"30"} />
-                                            </MDBBtn>
+                                            </MDBCard>
                                             <p><strong>주가메뉴</strong></p>
                                         </MDBCol>
 
                                         <MDBCol>
-                                            <MDBBtn floating
+                                            <MDBCard floating
                                                     className={'m-1'}
-                                                    style={{background:"white", borderRadius:"50px", border:"2px solid black",
+                                                    style={{background:"white", borderRadius:"50px", padding:"10px 15px",border:"2px solid black",
                                                         transition: "background 0.3s"}}
-                                                    onClick={handleChatgpt}
-                                                    role={'button'}
-                                                    onMouseEnter={(e) => { e.currentTarget.style.background="gray";}}
-                                                    onMouseLeave={(e) => { e.currentTarget.style.background="white";}} >
+                                                     onClick={handleChatgpt}
+                                                     onMouseEnter={(e) => { e.currentTarget.style.background="gray";}}
+                                                     onMouseLeave={(e) => { e.currentTarget.style.background="white";}} >
                                                 <img alt={""} src={"home.png"} width={"30"} height={"30"} />
-                                            </MDBBtn>
+                                            </MDBCard>
                                             <p><strong>챗봇</strong></p>
                                         </MDBCol>
 
