@@ -20,8 +20,10 @@ function NavBar(props) {
     const checkLoginStatus = () => {
         try {
             const login = localStorage.getItem("login");
+            const accessToken = localStorage.getItem("accessToken");
             if (login === "1") {
                 setIsLoggedIn(true); // "login"이 "1"이면 로그인 상태로 설정
+                axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`
             }
         } catch (error) {
             console.error("네트워크 오류:", error);
@@ -40,21 +42,55 @@ function NavBar(props) {
     };
 
     const handleLogout = () => {
+
         setIsLoggedIn(false);
         localStorage.setItem('login', "0");
         localStorage.removeItem('username'); // 유저네임 삭제
         localStorage.removeItem('accessToken');
         localStorage.removeItem('accessTokenExpiresIn');
-        expireCookie('refreshToken');
+       localStorage.removeItem('refreshToken');
+       // expireCookie('refreshToken');
         delete axios.defaults.headers.common["Authorization"];
+
+    };
+    const handleChatgpt = async() => {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+
+            if (!accessToken) {
+                delete axios.defaults.headers.common["Authorization"];
+            }
+            const response = await axios.post('/auth/chatbot', {
+
+            });
+
+            if (response.status === 200) {
+
+                document.location.href = '/chatbot';
+
+
+            }
+        } catch (error) {
+            if  (error.response.status === 401) {
+                handleLogout();
+              document.location.href = '/login';
+            }
+            else {
+                console.error('네트워크 오류:', error);
+
+            }
+
+        }
     };
 
 
     const fetchAccessToken = async () => { //페이지 로드시에 accesstoken 만료를 확인하기 위한 함수 모든 페이지에 있는 navbar에 작성함
         try {
-            const refreshToken = getCookie('refreshToken');
-            if (!refreshToken) return;
-            const accessTokenExpiration = localStorage.getItem('accessTokenExpiration');
+           const refreshToken =  localStorage.getItem('refreshToken');
+        //    const refreshToken=getCookie('refreshtoken');
+         //   const Token = localStorage.getItem('accessToken');
+           if (!refreshToken) return;
+            const accessTokenExpiration = localStorage.getItem('accessTokenExpiresIn');
 
             if (accessTokenExpiration && (accessTokenExpiration - Date.now()) < 30000) {
                 const response = await axios.post('/auth/reissue', {}, {
@@ -69,12 +105,17 @@ function NavBar(props) {
                     localStorage.setItem('accessToken', accessToken);
                     localStorage.setItem('accessTokenExpiresIn', accessTokenExpiresIn);
                     console.log('갱신 성공');
-                } else {
-                    console.error('갱신 실패:', response.statusText);
                 }
             }
         } catch (error) {
-            console.error('네트워크 오류:', error);
+            if  (error.response.status === 401) {
+                handleLogout();
+                document.location.href = '/login';
+            }
+            else {
+                console.error('네트워크 오류:', error);
+
+            }
         }
     };
     const getCookie = (name) => {
@@ -117,9 +158,11 @@ function NavBar(props) {
                         >
                             <Nav.Link href="/recommend">종목추천</Nav.Link>
                             <Nav.Link href="/price-menu">주가메뉴</Nav.Link>
-                            <Nav.Link href="/news" disabled>뉴스</Nav.Link>
-                            <Nav.Link href="/community" disabled>커뮤니티</Nav.Link>
-                            <Nav.Link href="/support" disabled>지원</Nav.Link>
+
+                            <Nav.Link  onClick={handleChatgpt}>챗봇</Nav.Link>
+
+
+
                         </Nav>
                         <ButtonGroup style={{ marginRight: "100px" }}>
                             {isLoggedIn ? (
@@ -128,9 +171,7 @@ function NavBar(props) {
                                     <Button variant={"outline-light"} onClick={handleLogout}>
                                         로그아웃
                                     </Button>
-                                    <Button variant={"outline-light"} href={"#"}>
-                                        마이페이지
-                                    </Button>
+
                                 </>
                             ) : (
                                 <>

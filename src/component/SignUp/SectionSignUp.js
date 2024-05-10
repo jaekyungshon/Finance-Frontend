@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
-
+import './SectionSignUp.css';
 function SignUp() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -14,7 +14,7 @@ function SignUp() {
         e.preventDefault();
 
         if (username.length < 8) {
-            setError('사용자 이름은 8자 이상이어야 합니다.');
+            setError('아이디는 8자 이상이어야 합니다.');
             return;
         }
 
@@ -60,9 +60,9 @@ function SignUp() {
         <Container className="d-flex justify-content-center align-items-center vh-70">
             <div className="text-center w-50">
                 <h2>회원가입</h2>
-                <Form onSubmit={handleSubmit}>
+                <Form className={"signup-form"} onSubmit={handleSubmit}>
                     <Form.Group controlId="formId">
-                        <Form.Label>사용자 이름</Form.Label>
+                        <Form.Label>아이디</Form.Label>
                         <Form.Control
                             type="text"
                             value={username}

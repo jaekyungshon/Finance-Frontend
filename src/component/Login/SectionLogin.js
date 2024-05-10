@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
+import './SectionLogin.css';
 //axios.defaults.withCredentials = true;index.js에 설정
 function SectionLogin() {
     const [username, setUsername] = useState('');
@@ -18,8 +19,8 @@ function SectionLogin() {
             expires: expires.toUTCString(),
             path: '/',
             httpOnly: true,
-            secure: true,
-            sameSite: 'strict'
+            secure: false,
+
         };
         document.cookie = `refreshToken=${refreshToken}; ${Object.entries(cookieOptions).map(([key, value]) => `${key}=${value}`).join('; ')}`;
     };
@@ -39,11 +40,16 @@ function SectionLogin() {
 
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('accessTokenExpiresIn', accessTokenExpiresIn);
-                setRefreshTokenCookie(refreshToken);
+
+            //  setRefreshTokenCookie(refreshToken);
+
+
+               localStorage.setItem('refreshToken',  refreshToken);
                 console.log('로그인 성공');
-                document.location.href = '/'
                 localStorage.setItem('login', "1");
                 localStorage.setItem('username', username);
+                document.location.href = '/';
+
             }
         } catch (error) {
          if  (error.response.status === 401) {
@@ -54,9 +60,9 @@ function SectionLogin() {
              console.error('네트워크 오류:', error);
              setError('네트워크 오류가 발생했습니다.');
          }
-          //  document.location.href = '/'
-           // localStorage.setItem('login', "1");
-           // localStorage.setItem('username', username);
+       //    document.location.href = '/'
+        //    localStorage.setItem('login', "1");
+        //    localStorage.setItem('username', username);
         }
     };
 
@@ -71,14 +77,14 @@ function SectionLogin() {
 
     return (
         <Container className="d-flex justify-content-center align-items-center vh-70">
-            <div className="text-center w-50">
+            <div className="text-center w-50 ">
                 <h1><img alt="" src="titlelog.png" width="40" height="40" className="d-inline-block align" />{' '}Finance</h1>
-                <Form onSubmit={handleLogin}>
+                <Form className="login-form" onSubmit={handleLogin}>
                     <Form.Group controlId="formId">
-                        <Form.Label>사용자 이름</Form.Label>
+                        <Form.Label>아이디</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="사용자 이름을 입력하세요"
+                            placeholder="아이디를 입력하세요"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required

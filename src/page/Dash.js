@@ -1,12 +1,55 @@
-import React from "react";
+import React, {useState} from "react";
 import GlobalStyle from "../GlobalStyle";
 import NavBar from "../layer/Navbar";
 import Card from "react-bootstrap/Card";
 import Footer from "../layer/Footer";
 import {MDBCol, MDBContainer,MDBRow,MDBBtn} from "mdb-react-ui-kit";
 import ScrollToTopButton from "../layer/ScrollToTopButton";
+import axios from "axios";
 
 function Dash(props) {
+
+    const handleChatgpt = async() => {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+
+            if (!accessToken) {
+                delete axios.defaults.headers.common["Authorization"];
+            }
+            const response = await axios.post('/auth/chatbot', {
+
+            });
+
+            if (response.status === 200) {
+
+                document.location.href = '/chatbot';
+
+
+            }
+        } catch (error) {
+            if  (error.response.status === 401) {
+                handleLogout();
+                document.location.href = '/login';
+            }
+            else {
+                console.error('네트워크 오류:', error);
+
+            }
+
+        }
+    };
+    const handleLogout = () => {
+
+
+        localStorage.setItem('login', "0");
+        localStorage.removeItem('username'); // 유저네임 삭제
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('accessTokenExpiresIn');
+        localStorage.removeItem('refreshToken');
+        // expireCookie('refreshToken');
+        delete axios.defaults.headers.common["Authorization"];
+
+    };
     return (
         <>
             <GlobalStyle/>
@@ -82,45 +125,21 @@ function Dash(props) {
                                             </MDBBtn>
                                             <p><strong>주가메뉴</strong></p>
                                         </MDBCol>
+
                                         <MDBCol>
                                             <MDBBtn floating
                                                     className={'m-1'}
                                                     style={{background:"white", borderRadius:"50px", border:"2px solid black",
                                                         transition: "background 0.3s"}}
-                                                    href={"http://localhost:3000/news"}
+                                                    onClick={handleChatgpt}
                                                     role={'button'}
                                                     onMouseEnter={(e) => { e.currentTarget.style.background="gray";}}
-                                                    onMouseLeave={(e) => { e.currentTarget.style.background="white";}} disabled>
+                                                    onMouseLeave={(e) => { e.currentTarget.style.background="white";}} >
                                                 <img alt={""} src={"home.png"} width={"30"} height={"30"} />
                                             </MDBBtn>
-                                            <p><strong>뉴스</strong></p>
+                                            <p><strong>챗봇</strong></p>
                                         </MDBCol>
-                                        <MDBCol>
-                                            <MDBBtn floating
-                                                    className={'m-1'}
-                                                    style={{background:"white", borderRadius:"50px", border:"2px solid black",
-                                                        transition: "background 0.3s"}}
-                                                    href={"http://localhost:3000/community"}
-                                                    role={'button'}
-                                                    onMouseEnter={(e) => { e.currentTarget.style.background="gray";}}
-                                                    onMouseLeave={(e) => { e.currentTarget.style.background="white";}} disabled>
-                                                <img alt={""} src={"home.png"} width={"30"} height={"30"} />
-                                            </MDBBtn>
-                                            <p><strong>커뮤니티</strong></p>
-                                        </MDBCol>
-                                        <MDBCol>
-                                            <MDBBtn floating
-                                                    className={'m-1'}
-                                                    style={{background:"white", borderRadius:"50px", border:"2px solid black",
-                                                        transition: "background 0.3s"}}
-                                                    href={"http://localhost:3000/support"}
-                                                    role={'button'}
-                                                    onMouseEnter={(e) => { e.currentTarget.style.background="gray";}}
-                                                    onMouseLeave={(e) => { e.currentTarget.style.background="white";}} disabled>
-                                                <img alt={""} src={"home.png"} width={"30"} height={"30"} />
-                                            </MDBBtn>
-                                            <p><strong>지원</strong></p>
-                                        </MDBCol>
+
                                     </MDBRow>
                                 </div>
                             </div>
