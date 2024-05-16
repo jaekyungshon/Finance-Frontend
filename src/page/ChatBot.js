@@ -1,9 +1,8 @@
 import React from "react";
 import NavBar from "../layer/Navbar";
 import GlobalStyle from "../GlobalStyle";
-import SearchBar from "../layer/SearchBar";
 import SectionChatBot from "../component/ChatBot/SectionChatBot";
-import Footer from "../layer/Footer";
+
 
 
 function ChatBot(props) {
@@ -16,7 +15,7 @@ function ChatBot(props) {
                 display:"flex", justifyContent:"center", alignItems:"center"}} className="text-center">
                 <SectionChatBot/>
             </div>
-            <Footer/>
+
         </>
     );
 }
