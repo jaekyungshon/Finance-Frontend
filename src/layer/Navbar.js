@@ -48,8 +48,8 @@ function NavBar(props) {
         localStorage.removeItem('username'); // 유저네임 삭제
         localStorage.removeItem('accessToken');
         localStorage.removeItem('accessTokenExpiresIn');
-       localStorage.removeItem('refreshToken');
-       // expireCookie('refreshToken');
+        localStorage.removeItem('refreshToken');
+        // expireCookie('refreshToken');
         delete axios.defaults.headers.common["Authorization"];
 
     };
@@ -65,7 +65,6 @@ function NavBar(props) {
             });
 
             if (response.status === 200) {
-
                 document.location.href = '/chatbot';
 
 
@@ -73,7 +72,7 @@ function NavBar(props) {
         } catch (error) {
             if  (error.response.status === 401) {
                 handleLogout();
-              document.location.href = '/login';
+                document.location.href = '/login';
             }
             else {
                 console.error('네트워크 오류:', error);
@@ -86,23 +85,23 @@ function NavBar(props) {
 
     const fetchAccessToken = async () => { //페이지 로드시에 accesstoken 만료를 확인하기 위한 함수 모든 페이지에 있는 navbar에 작성함
         try {
-           const refreshToken =  localStorage.getItem('refreshToken');
-        //    const refreshToken=getCookie('refreshtoken');
-         //   const Token = localStorage.getItem('accessToken');
-           if (!refreshToken) return;
+            const rToken =  localStorage.getItem('refreshToken');
+            const aToken =  localStorage.getItem('accessToken');
+            //    const refreshToken=getCookie('refreshtoken');
+            //   const Token = localStorage.getItem('accessToken');
+            if (!rToken) return;
             const accessTokenExpiration = localStorage.getItem('accessTokenExpiresIn');
 
             if (accessTokenExpiration && (accessTokenExpiration - Date.now()) < 30000) {
-                const response = await axios.post('/auth/reissue', {}, {
-                    headers: {
-                        'Authorization': `Bearer ${refreshToken}`
-                    }
-                });
+
+                const response = await axios.post('/auth/reissue', {refreshToken:rToken, accessToken:aToken}
+                );
 
                 if (response.status === 200) {
-                    const { accessToken, accessTokenExpiresIn } = response.data;
+                    const { accessToken, accessTokenExpiresIn,refreshToken } = response.data;
                     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`
                     localStorage.setItem('accessToken', accessToken);
+                    localStorage.setItem('refreshToken', refreshToken);
                     localStorage.setItem('accessTokenExpiresIn', accessTokenExpiresIn);
                     console.log('갱신 성공');
                 }
