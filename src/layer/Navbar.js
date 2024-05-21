@@ -41,17 +41,26 @@ function NavBar(props) {
         }
     };
 
-    const handleLogout = () => {
+    const handleLogout = async() => {
+        try{ const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.post('/auth/logout', {accessToken});
+            if (response.status === 200) {
 
-        setIsLoggedIn(false);
-        localStorage.setItem('login', "0");
-        localStorage.removeItem('username'); // 유저네임 삭제
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('accessTokenExpiresIn');
-        localStorage.removeItem('refreshToken');
-        // expireCookie('refreshToken');
-        delete axios.defaults.headers.common["Authorization"];
 
+
+                setIsLoggedIn(false);
+                localStorage.setItem('login', "0");
+                localStorage.removeItem('username'); // 유저네임 삭제
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('accessTokenExpiresIn');
+                localStorage.removeItem('refreshToken');
+                // expireCookie('refreshToken');
+                delete axios.defaults.headers.common["Authorization"];
+            }
+}catch(error){
+            console.error('네트워크 오류:', error);
+
+        }
     };
     const handleChatgpt = async() => {
         try {
