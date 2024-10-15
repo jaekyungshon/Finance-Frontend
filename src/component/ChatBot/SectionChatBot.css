@@ -1,0 +1,23 @@
+.alert {
+    text-align: left;
+}
+.alert.alert-primary
+{
+    background-color: #E2E3E5;
+}
+.alert.alert-secondary
+{
+
+    background-color: whitesmoke;
+
+}
+.chatgpt-message {
+    position: fixed;
+    bottom: 0;
+    width: 100%; /* 가로 폭 전체 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    font-size: 14px; /* 폰트 크기 */
+    left: 0;
+
+    color: gray; /* 회색 텍스트 색상 */
+}
